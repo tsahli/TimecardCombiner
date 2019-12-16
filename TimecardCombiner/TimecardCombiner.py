@@ -1,6 +1,5 @@
 import tika
 from tika import parser
-import re
 
 def dictMachine(item):
     split = item.split(":")
@@ -9,6 +8,19 @@ def dictMachine(item):
     d = {}
     d[key] = value
     return d
+
+def tupleMachine(row):
+    for index in range(len(row)):
+        for key in row[index]:
+            if "ST-WK-TOTAL" in key:
+                stTotal = row[index].get(key)
+            if "WORK ORDER #" in key:
+                workOrderNum = row[index].get(key)
+            if "OT-WK-TOTAL" in key:
+                otTotal = row[index].get(key)
+            if "JOB #" in key:
+                jobNumber = row[index].get(key)
+    return stTotal, otTotal, workOrderNum, jobNumber
 
 timecard = parser.from_file('Time Card Form.pdf')
 timecardContent = timecard['content']
@@ -47,6 +59,12 @@ for item in split:
         if item.startswith('7-'):
             row7.append(dictMachine(item))
 
-print(employeeNumber)
-print(weekEnding)
-print(row1)
+# STTOTAL, OTTOTAL, WORKORDERNUM, JOBNUM
+row1Tuple = tupleMachine(row1)
+row2Tuple = tupleMachine(row2)
+row3Tuple = tupleMachine(row3)
+row4Tuple = tupleMachine(row4)
+row5Tuple = tupleMachine(row5)
+row6Tuple = tupleMachine(row6)
+row7Tuple = tupleMachine(row7)
+
