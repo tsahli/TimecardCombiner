@@ -11,6 +11,10 @@ def dictMachine(item):
     return d
 
 def tupleMachine(row):
+    global stTotal
+    global workOrderNum
+    global otTotal
+    global jobNumber
     for index in range(len(row)):
         for key in row[index]:
             if "ST-WK-TOTAL" in key:
@@ -23,18 +27,17 @@ def tupleMachine(row):
                 jobNumber = row[index].get(key)
     return stTotal, otTotal, workOrderNum, jobNumber
 
-row1 = []
-row2 = []
-row3 = []
-row4 = []
-row5 = []
-row6 = []
-row7 = []
-
 timecardDirectory = os.getcwd()
 
 for file in os.listdir(timecardDirectory):
-    if file.endswith('.pdf') and 'PROCESSED' not in file: # NEED TO APPEND 'PROCESSED' TO FILENAME AFTER PROCESSING
+    row1 = []
+    row2 = []
+    row3 = []
+    row4 = []
+    row5 = []
+    row6 = []
+    row7 = []
+    if file.endswith('.pdf') and 'PROCESSED' not in file:
         timecard = parser.from_file(file)
         timecardContent = timecard['content']
         split = timecardContent.split('\n')
@@ -74,3 +77,10 @@ for file in os.listdir(timecardDirectory):
         row7Tuple = tupleMachine(row7)
         
         print(row1Tuple)
+        print(row2Tuple)
+        print(row3Tuple)
+        print(row4Tuple)
+        print(row5Tuple)
+        print(row6Tuple)
+        print(row7Tuple)
+        #os.rename(file, file.strip('.pdf') + " PROCESSED.pdf")
