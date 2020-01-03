@@ -21,11 +21,13 @@ def tupleMachine(row):
                 stTotal = row[index].get(key)
             if "WORK ORDER #" in key:
                 workOrderNum = row[index].get(key)
+            if "COST CODE" in key:
+                costCode = row[index].get(key)
             if "OT-WK-TOTAL" in key:
                 otTotal = row[index].get(key)
             if "JOB #" in key:
                 jobNumber = row[index].get(key)
-    return stTotal, otTotal, workOrderNum, jobNumber
+    return stTotal, otTotal, workOrderNum, str(costCode)[1:-1].strip(), jobNumber # Have to remove brackets & spaces from cost code
 
 timecardDirectory = os.getcwd()
 
@@ -37,6 +39,9 @@ for file in os.listdir(timecardDirectory):
     row5 = []
     row6 = []
     row7 = []
+    row8 = []
+    row9 = []
+    row10 = []
     if file.endswith('.pdf') and 'PROCESSED' not in file:
         timecard = parser.from_file(file)
         timecardContent = timecard['content']
@@ -52,6 +57,9 @@ for file in os.listdir(timecardDirectory):
                 if item.startswith('WeekEnding:'):
                     split = item.split(' ')
                     weekEnding = split[1]
+                if item.startswith('11-VC-WK-TOTAL:'):
+                    split = item.split(' ')
+                    totalVacation = split[1]
                 if item.startswith('1-'):
                     row1.append(dictMachine(item))
                 if item.startswith('2-'):
@@ -66,8 +74,14 @@ for file in os.listdir(timecardDirectory):
                     row6.append(dictMachine(item))
                 if item.startswith('7-'):
                     row7.append(dictMachine(item))
+                if item.startswith('8-'):
+                    row8.append(dictMachine(item))
+                if item.startswith('9-'):
+                    row9.append(dictMachine(item))
+                if item.startswith('10-'):
+                    row10.append(dictMachine(item))
 
-        # STTOTAL, OTTOTAL, WORKORDERNUM, JOBNUM
+        # STTOTAL, OTTOTAL, WORKORDERNUM, COSTCODE, JOBNUM
         row1Tuple = tupleMachine(row1)
         row2Tuple = tupleMachine(row2)
         row3Tuple = tupleMachine(row3)
@@ -75,6 +89,9 @@ for file in os.listdir(timecardDirectory):
         row5Tuple = tupleMachine(row5)
         row6Tuple = tupleMachine(row6)
         row7Tuple = tupleMachine(row7)
+        row8Tuple = tupleMachine(row8)
+        row9Tuple = tupleMachine(row9)
+        row10Tuple = tupleMachine(row10)
         
         print(row1Tuple)
         print(row2Tuple)
@@ -83,4 +100,8 @@ for file in os.listdir(timecardDirectory):
         print(row5Tuple)
         print(row6Tuple)
         print(row7Tuple)
+        print(row8Tuple)
+        print(row9Tuple)
+        print(row10Tuple)
+        print("total vacation: " + totalVacation)
         #os.rename(file, file.strip('.pdf') + " PROCESSED.pdf")
