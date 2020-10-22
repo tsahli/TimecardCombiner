@@ -1,6 +1,8 @@
 import tika
 from tika import parser
 import os
+import openpyxl
+from openpyxl import Workbook
 
 def dictMachine(item):
     split = item.split(":")
@@ -31,6 +33,11 @@ def tupleMachine(row):
 
 timecardDirectory = os.getcwd()
 
+wb = Workbook()
+ws = wb.active
+ws.append(["DATE", "NAME", "EMPLOYEE #", "JOB #", "DEVELOPMENT", "BIM COORDINATION", "EQUIPMENT", "UNDERGROUND", "WALLS", "OVERHEAD", "LIGHTING", "FINISHES", "WIRE", "VACATION"])
+next_row = 2
+
 for file in os.listdir(timecardDirectory):
     row1 = []
     row2 = []
@@ -51,6 +58,9 @@ for file in os.listdir(timecardDirectory):
         for item in split:
             item = item.strip('\t')
             if item:
+                if item.startswith('EmployeeName'):
+                    split = item.split(': ')
+                    employeeName = split[1]
                 if item.startswith('EmployeeNumber:'):
                     split = item.split(' ')
                     employeeNumber = split[1]
@@ -92,16 +102,104 @@ for file in os.listdir(timecardDirectory):
         row8Tuple = tupleMachine(row8)
         row9Tuple = tupleMachine(row9)
         row10Tuple = tupleMachine(row10)
-        
-        print(row1Tuple)
-        print(row2Tuple)
-        print(row3Tuple)
-        print(row4Tuple)
-        print(row5Tuple)
-        print(row6Tuple)
-        print(row7Tuple)
-        print(row8Tuple)
-        print(row9Tuple)
-        print(row10Tuple)
-        print("total vacation: " + totalVacation)
+
+        rowTupleList = [row1Tuple, row2Tuple, row3Tuple, row4Tuple, row5Tuple, row6Tuple, row7Tuple, row8Tuple, row9Tuple, row10Tuple]
+
+        for rowTuple in rowTupleList:
+            if rowTuple[0] != '0' or rowTuple[1] != '0':
+                totalHours = float(rowTuple[0]) + float(rowTuple[1])
+                employeeNumber = int(employeeNumber)
+                if rowTuple[4] == '' or rowTuple[4] == None:
+                    jobNumber = '0'
+                else:
+                    jobNumber = rowTuple[4]
+
+                if rowTuple[3] == '1':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 5, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '11':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 6, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '21':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 7, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '31':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 8, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '41':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 9, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '51':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 10, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '61':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 11, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '71':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 12, row = next_row, value = totalHours)
+                    next_row += 1
+                if rowTuple[3] == '81':
+                    ws.cell(column = 1, row = next_row, value = weekEnding)
+                    ws.cell(column = 2, row = next_row, value = employeeName)
+                    ws.cell(column = 3, row = next_row, value = employeeNumber)
+                    ws.cell(column = 4, row = next_row, value = jobNumber)
+                    ws.cell(column = 13, row = next_row, value = totalHours)
+                    next_row += 1
+
+        if totalVacation != '0':
+            ws.cell(column = 1, row = next_row, value = weekEnding)
+            ws.cell(column = 2, row = next_row, value = employeeName)
+            ws.cell(column = 3, row = next_row, value = employeeNumber)
+            ws.cell(column = 4, row = next_row, value = '0')
+            ws.cell(column = 14, row = next_row, value = float(totalVacation))
+            next_row += 1
+
+
+wb.save('test.xlsx')
+                 
+        #print(employeeNumber + " - " + employeeName)
+        #print(row1Tuple)
+        #print(row2Tuple)
+        #print(row3Tuple)
+        #print(row4Tuple)
+        #print(row5Tuple)
+        #print(row6Tuple)
+        #print(row7Tuple)
+        #print(row8Tuple)
+        #print(row9Tuple)
+        #print(row10Tuple)
+        #print("total vacation: " + totalVacation)
+        # ADD EMPLOYEE NUM AND WEEKENDING TO FILENAME
         #os.rename(file, file.strip('.pdf') + " PROCESSED.pdf")
