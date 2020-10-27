@@ -46,7 +46,7 @@ while True:
 
 wb = Workbook()
 ws = wb.active
-ws.append(["DATE", "NAME", "EMPLOYEE #", "JOB #", "DEVELOPMENT", "BIM COORDINATION", "EQUIPMENT", "UNDERGROUND", "WALLS", "OVERHEAD", "LIGHTING", "FINISHES", "WIRE", "VACATION"])
+ws.append(["DATE", "NAME", "EMPLOYEE #", "JOB #", "DEVELOPMENT", "BIM COORDINATION", "EQUIPMENT", "UNDERGROUND", "WALLS", "OVERHEAD", "LIGHTING", "FINISHES", "WIRE", "UNCATEGORIZED", "VACATION"])
 next_row = 2
 timecardCount = 0
 notProcessedList = []
@@ -191,13 +191,21 @@ for file in os.listdir(timecardDirectory):
                         ws.cell(column = 4, row = next_row, value = jobNumber)
                         ws.cell(column = 13, row = next_row, value = totalHours)
                         next_row += 1
+                    if rowTuple[3] == '':
+                        ws.cell(column = 1, row = next_row, value = weekEnding)
+                        ws.cell(column = 2, row = next_row, value = employeeName)
+                        ws.cell(column = 3, row = next_row, value = employeeNumber)
+                        ws.cell(column = 4, row = next_row, value = jobNumber)
+                        ws.cell(column = 14, row = next_row, value = totalHours)
+                        next_row += 1
+
 
             if totalVacation != '0':
                 ws.cell(column = 1, row = next_row, value = weekEnding)
                 ws.cell(column = 2, row = next_row, value = employeeName)
                 ws.cell(column = 3, row = next_row, value = employeeNumber)
                 ws.cell(column = 4, row = next_row, value = '0000')
-                ws.cell(column = 14, row = next_row, value = float(totalVacation))
+                ws.cell(column = 15, row = next_row, value = float(totalVacation))
                 next_row += 1
         
             timecardCount += 1
